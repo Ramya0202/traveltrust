@@ -9,29 +9,25 @@ on:
 jobs:
   validate:
     runs-on: ubuntu-latest
+    # Using the official image makes the workflow significantly faster
+    container:
+      image: salesforce/cli:latest-full
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install Salesforce CLI
+      - name: Verify Environment
         run: |
-          npm install --global @salesforce/cli
+          sf --version
+          node --version
 
-      - name: Show CLI version
-        run: sf --version
-
-      - name: Debug repo root
+      - name: Validate Project Structure
         run: |
-          echo "PWD:"
-          pwd
-          echo "Root files:"
-          ls -la
-          echo "force-app contents (if exists):"
-          ls -la force-app || true
-          
-
-      - name: Validate project structure
-        run: |
+          # If this fails, your files are likely in a subfolder
           test -f sfdx-project.json
           test -d force-app
+          echo "Project structure is valid."
+
+      - name: Source List (Optional Debug)
+        run: sf project list column
