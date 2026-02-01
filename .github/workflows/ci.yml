@@ -9,9 +9,13 @@ on:
 jobs:
   validate:
     runs-on: ubuntu-latest
-    # Using the official image makes the workflow significantly faster
     container:
       image: salesforce/cli:latest-full
+
+    # This tells GitHub to run all commands inside the traveltrust folder
+    defaults:
+      run:
+        working-directory: ./traveltrust
 
     steps:
       - name: Checkout
@@ -24,10 +28,9 @@ jobs:
 
       - name: Validate Project Structure
         run: |
-          # If this fails, your files are likely in a subfolder
           test -f sfdx-project.json
           test -d force-app
-          echo "Project structure is valid."
+          echo "Success: Project files found in traveltrust directory."
 
-      - name: Source List (Optional Debug)
-        run: sf project list column
+      - name: List Salesforce Files
+        run: ls -la
