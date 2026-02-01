@@ -12,25 +12,19 @@ jobs:
     container:
       image: salesforce/cli:latest-full
 
-    # This tells GitHub to run all commands inside the traveltrust folder
-    defaults:
-      run:
-        working-directory: ./traveltrust
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # We don't need working-directory for --version
       - name: Verify Environment
         run: |
           sf --version
           node --version
 
       - name: Validate Project Structure
+        working-directory: ./traveltrust
         run: |
           test -f sfdx-project.json
           test -d force-app
           echo "Success: Project files found in traveltrust directory."
-
-      - name: List Salesforce Files
-        run: ls -la
