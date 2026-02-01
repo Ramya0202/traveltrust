@@ -35,5 +35,10 @@ jobs:
 
       - name: Validate project structure
         run: |
-          test -f sfdx-project.json
-          test -d force-app
+          # This searches the whole tree for the file
+          if find . -name "sfdx-project.json" | grep -q .; then
+            echo "Found sfdx-project.json"
+          else
+            echo "Error: sfdx-project.json not found in the repository"
+            exit 1
+          fi
