@@ -2,29 +2,38 @@ name: CI
 
 on:
   push:
-    branches: [ "main", "develop" ]
+    branches:
+      - main
+      - develop
   pull_request:
-    branches: [ "main", "develop" ]
+    branches:
+      - main
+      - develop
 
 jobs:
   validate:
     runs-on: ubuntu-latest
-    container:
-      image: salesforce/cli:latest-full
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # We don't need working-directory for --version
-      - name: Verify Environment
-        run: |
-          sf --version
-          node --version
+      - name: Install Salesforce CLI
+        run: npm install --global @salesforce/cli
 
-      - name: Validate Project Structure
-        working-directory: ./traveltrust
+      - name: Show CLI version
+        run: sf --version
+
+      - name: Debug repo root
+        run: |
+          echo "PWD:"
+          pwd
+          echo "Root files:"
+          ls -la
+          echo "force-app contents (if exists):"
+          ls -la force-app || true
+
+      - name: Validate project structure
         run: |
           test -f sfdx-project.json
           test -d force-app
-          echo "Success: Project files found in traveltrust directory."
