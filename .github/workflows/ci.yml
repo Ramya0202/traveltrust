@@ -29,6 +29,7 @@ jobs:
           ls -la
           echo "force-app contents (if exists):"
           ls -la force-app || true
+          
 
       - name: Validate project structure
         run: |
