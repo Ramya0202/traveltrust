@@ -21,6 +21,15 @@ jobs:
       - name: Show CLI version
         run: sf --version
 
+          - name: Debug repo root
+        run: |
+          echo "PWD:"
+          pwd
+          echo "Root files:"
+          ls -la
+          echo "force-app contents (if exists):"
+          ls -la force-app || true
+
       - name: Validate project structure
         run: |
           test -f sfdx-project.json
