@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Salesforce CLI
+        run: npm install --global @salesforce/cli
+
+      - name: Show CLI version
+        run: sf --version
+
+      - name: Debug repo root
+        run: |
+          echo "PWD:"
+          pwd
+          echo "Root files:"
+          ls -la
+          echo "force-app contents (if exists):"
+          ls -la force-app || true
+
+      - name: Validate project structure
+        run: |
+          # This searches the whole tree for the file
+          if find . -name "sfdx-project.json" | grep -q .; then
+            echo "Found sfdx-project.json"
+          else
+            echo "Error: sfdx-project.json not found in the repository"
+            exit 1
+          fi
