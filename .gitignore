@@ -46,3 +46,10 @@ $RECYCLE.BIN/
 **/__pycache__/
 **/.venv/
 **/venv/
+
+
+# SSH keys (never commit)
+*.pub
+*.pem
+id_ed25519
+id_ed25519.pub
