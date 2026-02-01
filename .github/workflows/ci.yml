@@ -21,7 +21,7 @@ jobs:
       - name: Show CLI version
         run: sf --version
 
-          - name: Debug repo root
+      - name: Debug repo root
         run: |
           echo "PWD:"
           pwd
